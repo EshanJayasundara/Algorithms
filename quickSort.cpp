@@ -2,44 +2,28 @@
 
 using namespace std;
 
-void quickSort(int array[], int low, int high) {
-    if (low >= high) {
-        return;
-    }
-    
-    // choose middle element as the pivot
-    int pivot_index = high;
-    int x = low + (high-low)/2;
-    int pivot = array[x];
-    array[x] = array[pivot_index];
-    array[pivot_index] = pivot;
+void quicksort(int arr[], int low, int high) {
+    if (low < high) {
+        int pivot = arr[high];  // Choose the last element as the pivot
+        int i = low - 1;  // Index of smaller element
 
-    int i = low;
-    int j = high - 1;
-    
-    while (i <= j) {
-        if (array[i] <= array[pivot_index]) {
-            i++;
+        for (int j = low; j < high; ++j) {
+            // If the current element is smaller than or equal to the pivot
+            if (arr[j] <= pivot) {
+                // Swap arr[i+1] and arr[j]
+                swap(arr[++i], arr[j]);
+            }
         }
-        if (array[j] > array[pivot_index]) {
-            j--;
-        }
-        if (i < j) {
-            int temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-            i++;
-            j--;
-        }
+
+        // Swap arr[i+1] and arr[high] (put the pivot in its correct place)
+        swap(arr[i + 1], arr[high]);
+
+        int pivotIndex = i + 1;
+
+        // Recursively sort the subarrays on the left and right of the pivot
+        quicksort(arr, low, pivotIndex - 1);
+        quicksort(arr, pivotIndex + 1, high);
     }
-    
-    // Swap pivot to its final position
-    int temp = array[i];
-    array[i] = array[pivot_index];
-    array[pivot_index] = temp;
-    
-    quickSort(array, low, i - 1);
-    quickSort(array, i + 1, high);
 }
 
 
@@ -58,7 +42,7 @@ int main() {
     }
 
     // call bubbleSort function
-    quickSort(c, 0, size-1);
+    quicksort(c, 0, size-1);
 
     // print sorted array
     for (size_t i = 0; i < size; i++)
