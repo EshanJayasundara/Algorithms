@@ -11,9 +11,9 @@ void dfs(int i) {
     }
     cout << node[i] << " "; // pre-order
     dfs((i+1)*2-1);
-    cout << node[i] << " "; // in-order
+    // cout << node[i] << " "; // in-order
     dfs((i+1)*2);
-    cout << node[i] << " "; // post-order
+    // cout << node[i] << " "; // post-order
 }
 
 int main() {
