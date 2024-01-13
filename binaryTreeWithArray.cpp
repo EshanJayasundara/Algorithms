@@ -8,7 +8,7 @@ using namespace std;
         //  / \   / \
         // 3   4 5   6
 
-int node[] = {2, 5, 7, 3, 5 ,2, 6 ,1};
+int node[] = {2, 5, 7, 3, 5 ,2, 6};
 
 int main() {
     cout << node[0] << "\n";
