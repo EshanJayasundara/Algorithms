@@ -8,11 +8,20 @@ using namespace std;
         //  / \   / \
         // 3   4 5   6
 
-int node[] = {2, 5, 7, 3, 5 ,2, 6};
+int node[] = {2, 5, 7, 3, 5 ,2, 6 , NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+
+// depth traversal in a binary tree
+void dfs(int i) {
+    if(node[i] == NULL) {
+        return;
+    }
+    cout << node[i] << " "; // pre-order
+    dfs((i+1)*2-1);
+    // cout << node[i] << " "; // in-order
+    dfs((i+1)*2);
+    // cout << node[i] << " "; // post-order
+}
 
 int main() {
-    cout << node[0] << "\n";
-    cout << node[1] << "\n";
-    cout << node[2] << "\n";
-    cout << node[3] << "\n";
+    dfs(0);
 }
