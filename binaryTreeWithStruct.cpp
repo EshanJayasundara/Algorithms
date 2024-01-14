@@ -13,6 +13,7 @@ void addChildren(Node* parent, int data);
 void printNodes(Node* node);
 
 int main() {
+    
     Node* root = createNode(2);
     addChildren(root, 5);
     addChildren(root, 7);
@@ -20,16 +21,9 @@ int main() {
     addChildren(root->children[0], 5);
     addChildren(root->children[1], 2);
     addChildren(root->children[1], 6);
-    addChildren(root->children[0]->children[0], NULL);
-    addChildren(root->children[0]->children[0], NULL);
-    addChildren(root->children[0]->children[1], NULL);
-    addChildren(root->children[0]->children[1], NULL);
-    addChildren(root->children[1]->children[0], NULL);
-    addChildren(root->children[1]->children[0], NULL);
-    addChildren(root->children[1]->children[1], NULL);
-    addChildren(root->children[1]->children[1], NULL);
     
     printNodes(root); // depth traversal in a binary tree
+
     return 0;
 }
 
@@ -47,12 +41,10 @@ void addChildren(Node* parent, int data) {
 
 // depth first traversal in a binary tree
 void printNodes(Node* node) {
-    if(size(node->children) == 0) {
+    cout << node->data << " ";
+    if (size(node->children) == 0) {
         return;
     }
-    cout << node->data << " "; // pre-order
     printNodes(node->children[0]);
-    // cout << node->data << " "; // in-order
     printNodes(node->children[1]);
-    // cout << node->data << " "; // post-order
 }
