@@ -174,8 +174,10 @@ string pBoxSubstitution(string sbox_output) {
 }
 
 // rounds
-vector<string> round(string LPT, string RPT, string expanded_RPT, string key) {
+vector<string> round(string LPT, string RPT, string key) {
     char xor_output[49];
+
+    string expanded_RPT = expantionBox(RPT); // Expansion Permutation 1
 
     // Key Transformation
     string compressed_key = keyCompressionBox(key);
@@ -227,6 +229,40 @@ vector<string> round(string LPT, string RPT, string expanded_RPT, string key) {
     return cipher_text;
 }
 
+// final permutation
+vector<string> finalPermutation(string bin_plain_text) {
+    int final_permutation_box[] = {
+        40,8,48,34,16,56,24,32,39,7,47,15,55,23,63,31,
+        38,6,46,14,54,22,62,30,37,5,45,13,53,21,61,29,
+        36,4,44,12,52,20,60,28,35,3,43,11,51,19,59,27,
+        34,2,42,10,50,18,58,26,33,1,41,9,49,17,57,25
+        };
+    // cout<<plain_text[63]<<endl;
+    char output_of_final_permutation[65];
+    for (int i=0; i<64; i++)
+    {
+        output_of_final_permutation[i] = bin_plain_text[final_permutation_box[i]-1];
+    }
+    // cout << output_of_first_permutation;
+    string LPT = "";
+    string RPT = "";
+    for (size_t i = 0; i < 32; i++)
+    {
+        LPT += output_of_final_permutation[i];
+    }
+    for (size_t i = 32; i < 64; i++)
+    {
+        RPT += output_of_final_permutation[i];
+    }
+
+    vector<string> combined;
+    combined.push_back(LPT);
+    combined.push_back(RPT);
+
+    return combined;
+}
+
+
 string bin(char c) {
     string s = "";
     while(c!=0) {
@@ -257,23 +293,55 @@ int main() {
 
     vector<string> initial_permuted_txt = initialPermutation(bin_plain_text);
 
-    string expanded_RPT = expantionBox(initial_permuted_txt[1]); // Expansion Permutation 1
-
+    // #1
     string keyH = "0101010101010101101001010101";
     string keyL = "0101010101010101010101010101";
-
     string key = circularLeftShift(keyH) + circularLeftShift(keyL);
+    vector<string> DES1 = round(initial_permuted_txt[0], initial_permuted_txt[1], key);
+    
+    vector<string> output = finalPermutation(DES1[0] + DES1[1]);
 
-    vector<string> DES1 = round(initial_permuted_txt[0], initial_permuted_txt[1], expanded_RPT, key);
+    // // #2
+    // for (size_t i = 0; i < 32; i++)
+    // {
+    //     keyH[i] = key[i];
+    // }
+    // for (size_t i = 32; i < 64; i++)
+    // {
+    //     keyL[i-32] = key[i];
+    // }
+    // key = circularLeftShift(keyH) + circularLeftShift(keyL);
+    // vector<string> DES2 = round(DES1[0], DES1[1], expanded_RPT, key);
+
+    // // #3
+    // for (size_t i = 0; i < 32; i++)
+    // {
+    //     keyH[i] = key[i];
+    // }
+    // for (size_t i = 32; i < 64; i++)
+    // {
+    //     keyL[i-32] = key[i];
+    // }
+    // key = circularLeftShift(keyH) + circularLeftShift(keyL);
+    // for (size_t i = 0; i < 32; i++)
+    // {
+    //     keyH[i] = key[i];
+    // }
+    // for (size_t i = 32; i < 64; i++)
+    // {
+    //     keyL[i-32] = key[i];
+    // }
+    // key = circularLeftShift(keyH) + circularLeftShift(keyL);
+    // vector<string> DES3 = round(DES2[0], DES2[1], expanded_RPT, key);
 
     cout << "Cipher Text: ";
     for (size_t i = 0; i < 32; i++)
     {
-        cout << DES1[0][i];
+        cout << output[0][i];
     }
     for (size_t i = 0; i < 32; i++)
     {
-        cout << DES1[1][i];
+        cout << output[1][i];
     }
 
     return 0;
